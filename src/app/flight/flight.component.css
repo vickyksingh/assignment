@@ -1,0 +1,30 @@
+
+.submit_button{
+    
+    margin-bottom: 4px;
+   
+} 
+ th{
+    font-weight: bold;
+    font-size: 20px;
+    
+}
+.searchBox{
+    margin-top: 4px;
+    margin-left:2px;
+    border:1px solid #ccc
+}
+
+ label{
+    font-weight: bold;
+} 
+
+
+
+  .pegination{
+      text-align: center;
+      width: 100%;
+  }
+
+  
+ 

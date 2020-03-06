@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://data.sfgov.org",
+    "secure": false,
+    "changeOrigin":true
+  }
+}

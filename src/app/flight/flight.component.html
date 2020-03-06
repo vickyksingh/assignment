@@ -1,0 +1,231 @@
+
+
+<div class="row">
+  <div class="col-6">
+    <div class="searchBox form-group">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Search"
+        [(ngModel)]="searchItem"
+      />
+    </div>
+  </div>
+</div>
+<div class="action">
+  <button class="btn btn-secondary" (click)="hiddeFormHandler()">
+    Add New Flight
+  </button>
+  <button  (click)="exportAsXLSX()" class="btn btn-primary export">
+    Export Data
+  </button>
+</div>
+<div class="container">
+  
+  <div class="flight_div">
+    
+    <form [formGroup]="flightForm" *ngIf="hiddeForm">
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputTime">Time</label>
+            <input
+              type="datetime-local"
+              step="0.001"
+              class="form-control"
+              id="inputTime"
+              placeholder="time"
+              formControlName="time"
+            />
+            <div
+              style="color:red"
+              *ngIf="
+                flightForm.get('time').errors && flightForm.get('time').touched
+              "
+            >
+              <span *ngIf="flightForm.get('time').errors['required']"
+                >Timing is required</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputAirline">Airline</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputAirline"
+              placeholder="airline"
+              formControlName="airline"
+            />
+            <div
+              style="color:red"
+              *ngIf="
+                flightForm.get('airline').errors &&
+                flightForm.get('airline').touched
+              "
+            >
+              <span *ngIf="flightForm.get('airline').errors['required']"
+                >Flight name is required</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputFlightNumber">Flight Number</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputFlightNumber"
+              placeholder="Flight Numer"
+              formControlName="flight_number"
+            />
+          </div>
+          <div
+            style="color:red"
+            *ngIf="
+              flightForm.get('flight_number').errors &&
+              flightForm.get('flight_number').touched
+            "
+          >
+            <span *ngIf="flightForm.get('flight_number').errors['required']"
+              >Flight Number is required</span
+            >
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputTransaction">Transaction</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputTransaction"
+              placeholder="transaction"
+              formControlName="transaction"
+            />
+          </div>
+          <div
+            style="color:red"
+            *ngIf="
+              flightForm.get('transaction').errors &&
+              flightForm.get('transaction').touched
+            "
+          >
+            <span *ngIf="flightForm.get('transaction').errors['required']"
+              >Transaction is required</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputTerminal">Terminal</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputTerminal"
+              placeholder="terminal"
+              formControlName="terminal"
+            />
+          </div>
+          <div
+            style="color:red"
+            *ngIf="
+              flightForm.get('terminal').errors &&
+              flightForm.get('terminal').touched
+            "
+          >
+            <span *ngIf="flightForm.get('terminal').errors['required']"
+              >Terminal is required</span
+            >
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label for="inputGateNumber">Gate Number</label>
+            <input
+              type="email"
+              class="form-control"
+              id="inputGateNumber"
+              placeholder="gate number"
+              formControlName="gate"
+            />
+          </div>
+          <div
+            style="color:red"
+            *ngIf="
+              flightForm.get('gate').errors && flightForm.get('gate').touched
+            "
+          >
+            <span *ngIf="flightForm.get('gate').errors['required']"
+              >Gate Number is required</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="submit_button">
+        <button
+          class="btn btn-primary"
+          [disabled]="!flightForm.valid"
+          (click)="addFlightHandler()"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="!hiddeForm">
+<h4 style="text-align: center;margin-top: 10px;">FLIGHT DETAILS</h4>
+<table class="table" >
+  <thead style="background-color: bisque;">
+    <tr>
+      <th scope="col">TIME</th>
+      <th scope="col">AIRLINE</th>
+      <th scope="col">FLIGHT_NUMBER</th>
+      <th scope="col">TRANSACTION</th>
+      <th scope="col">TERMINAL</th>
+      <th scope="col">GATE</th>
+      <th>ACTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      class="dataRow"
+      *ngFor="
+        let flight of flights
+          | filterPipe: searchItem
+          | paginate: { itemsPerPage: 9, currentPage: p };
+        index as i
+      "
+    >
+      <td>{{ flight.time | date: "medium" }}</td>
+      <td>
+        <div>{{ flight.airline }}</div>
+      </td>
+      <td>{{ flight.flight_number }}</td>
+      <td>{{ flight.transaction }}</td>
+      <td>{{ flight.terminal }}</td>
+      <td>{{ flight.gate }}</td>
+      <td>
+        <button class="btn btn-danger" (click)="deleteFlightEntry(i)">
+          Delete
+        </button>
+        <button class="btn btn-warning" (click)="editFlightEntry(flight)">
+          Edit
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="pegination" *ngIf="!hiddeForm">
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+ 
